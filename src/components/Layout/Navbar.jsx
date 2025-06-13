@@ -12,39 +12,43 @@ const Navbar = () => {
   const navLinks = [
     { title: 'الرئيسية', path: '/' },
     { title: 'منتجاتنا', path: '/products' },
-    { title: 'خدماتنا', path: '/services' },
     { title: 'من نحن', path: '/about' },
     { title: 'تواصل معنا', path: '/contact' },
-
   ];
 
   return (
-    <nav className="bg-white shadow-md py-4 px-6 sticky top-0 z-50">
+    <nav className="bg-dark text-white py-4 px-6 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="flex items-center">
-          <span className="text-2xl font-bold text-green-600">شمس تك</span>
+          <span className="text-2xl font-bold text-primary-500">Solar Solutions</span>
         </Link>
 
         {/* القائمة للشاشات الكبيرة */}
-        <div className="hidden md:flex mx-1 space-x-8 rtl:space-x-reverse">
+        <div className="hidden md:flex space-x-8 rtl:space-x-reverse">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
-              className="text-gray-700 hover:text-green-600 transition-colors duration-300"
+              className="text-white hover:text-primary-400 transition-colors duration-300"
             >
               {link.title}
             </Link>
           ))}
         </div>
 
-        {/* زر تسجيل الدخول */}
-        <div className="hidden md:flex items-center">
+        {/* أزرار التسجيل والدخول */}
+        <div className="hidden md:flex items-center space-x-4 rtl:space-x-reverse">
           <Link
             to="/login"
-            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-300"
+            className="bg-transparent border border-primary-500 text-primary-500 px-4 py-2 rounded-md hover:bg-primary-500 hover:text-white transition-colors duration-300"
           >
-            تسجيل الدخول
+            دخول
+          </Link>
+          <Link
+            to="/register"
+            className="bg-primary-500 text-white px-4 py-2 rounded-md hover:bg-primary-600 transition-colors duration-300"
+          >
+            تسجيل
           </Link>
         </div>
 
@@ -52,7 +56,7 @@ const Navbar = () => {
         <div className="md:hidden">
           <button
             onClick={toggleMenu}
-            className="text-gray-700 hover:text-green-600 focus:outline-none"
+            className="text-white hover:text-primary-400 focus:outline-none"
           >
             {isOpen ? (
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -74,26 +78,35 @@ const Navbar = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className="md:hidden bg-white absolute left-0 right-0 shadow-md py-4 px-6"
+          className="md:hidden bg-dark-light absolute left-0 right-0 shadow-md py-4 px-6"
         >
           <div className="flex flex-col space-y-4">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className="text-gray-700 hover:text-green-600 transition-colors duration-300"
+                className="text-white hover:text-primary-400 transition-colors duration-300"
                 onClick={toggleMenu}
               >
                 {link.title}
               </Link>
             ))}
-            <Link
-              to="/login"
-              className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-300 text-center"
-              onClick={toggleMenu}
-            >
-              تسجيل الدخول
-            </Link>
+            <div className="flex flex-col space-y-2 pt-2 border-t border-gray-700">
+              <Link
+                to="/login"
+                className="bg-transparent border border-primary-500 text-primary-500 px-4 py-2 rounded-md hover:bg-primary-500 hover:text-white transition-colors duration-300 text-center"
+                onClick={toggleMenu}
+              >
+                دخول
+              </Link>
+              <Link
+                to="/register"
+                className="bg-primary-500 text-white px-4 py-2 rounded-md hover:bg-primary-600 transition-colors duration-300 text-center"
+                onClick={toggleMenu}
+              >
+                تسجيل
+              </Link>
+            </div>
           </div>
         </motion.div>
       )}
