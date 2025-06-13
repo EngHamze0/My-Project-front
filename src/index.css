@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+:root {
+  --primary-color: #00c3df;
+  --secondary-color: #005573;
+  --dark-color: #1a1a1a;
+}
+
+html {
+  direction: rtl;
+}
+
+body {
+  font-family: 'Tajawal', sans-serif;
+}
+
+/* تخصيص السكرول بار */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-color);
+}
+
+/* تنسيقات عامة */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* تنسيقات الأزرار */
+.btn {
+  @apply px-6 py-3 rounded-md transition-colors duration-300;
+}
+
+.btn-primary {
+  @apply bg-primary-500 hover:bg-primary-600 text-white;
+}
+
+.btn-secondary {
+  @apply bg-secondary-500 hover:bg-secondary-600 text-white;
+}
+
+.btn-outline-primary {
+  @apply border-2 border-primary-500 text-primary-500 hover:bg-primary-50;
+}
+
+.btn-outline-secondary {
+  @apply border-2 border-secondary-500 text-secondary-500 hover:bg-secondary-50;
+}
+
+/* تنسيقات العناوين */
+.heading-primary {
+  @apply text-primary-500 font-bold;
+}
+
+.heading-secondary {
+  @apply text-secondary-500 font-bold;
+}
+
+/* تنسيقات الخلفيات */
+.bg-gradient-primary {
+  @apply bg-gradient-to-r from-primary-600 to-primary-400;
+}
+
+.bg-gradient-secondary {
+  @apply bg-gradient-to-r from-secondary-600 to-secondary-400;
+}
