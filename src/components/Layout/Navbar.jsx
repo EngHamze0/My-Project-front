@@ -20,16 +20,18 @@ const Navbar = () => {
     <nav className="bg-dark text-white py-4 px-6 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="flex items-center">
-          <span className="text-2xl font-bold text-primary-500">Solar Solutions</span>
+          <span className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">
+            Solar Solutions
+          </span>
         </Link>
 
         {/* القائمة للشاشات الكبيرة */}
-        <div className="hidden md:flex space-x-8 rtl:space-x-reverse">
+        <div className="hidden md:flex space-x-10 rtl:space-x-reverse">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
-              className="text-white hover:text-primary-400 transition-colors duration-300"
+              className="text-white hover:text-primary-400 transition-colors duration-300 px-2"
             >
               {link.title}
             </Link>
@@ -37,16 +39,16 @@ const Navbar = () => {
         </div>
 
         {/* أزرار التسجيل والدخول */}
-        <div className="hidden md:flex items-center space-x-4 rtl:space-x-reverse">
+        <div className="hidden  md:flex items-center  space-x-6 rtl:space-x-reverse">
           <Link
             to="/login"
-            className="bg-transparent border border-primary-500 text-primary-500 px-4 py-2 rounded-md hover:bg-primary-500 hover:text-white transition-colors duration-300"
+            className="bg-transparent  mx-1 border  border-primary-500 text-primary-500 px-4 py-2 rounded-2xl hover:bg-primary-500 hover:text-dark-light transition-colors duration-300"
           >
             دخول
           </Link>
           <Link
             to="/register"
-            className="bg-primary-500 text-white px-4 py-2 rounded-md hover:bg-primary-600 transition-colors duration-300"
+            className="bg-primary-500 mx-1  text-dark-light hover:text-white px-4 py-2 rounded-2xl hover:bg-primary-600 transition-colors duration-300"
           >
             تسجيل
           </Link>
@@ -85,16 +87,16 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className="text-white hover:text-primary-400 transition-colors duration-300"
+                className="text-white hover:text-primary-400 transition-colors duration-300 py-2"
                 onClick={toggleMenu}
               >
                 {link.title}
               </Link>
             ))}
-            <div className="flex flex-col space-y-2 pt-2 border-t border-gray-700">
+            <div className="flex flex-col space-y-3 pt-3 border-t border-gray-700">
               <Link
                 to="/login"
-                className="bg-transparent border border-primary-500 text-primary-500 px-4 py-2 rounded-md hover:bg-primary-500 hover:text-white transition-colors duration-300 text-center"
+                className="bg-transparent border border-primary-500 text-primary-500 px-4 py-2 rounded-md hover:bg-primary-500 hover:text-white transition-colors duration-300 text-center mt-2"
                 onClick={toggleMenu}
               >
                 دخول
