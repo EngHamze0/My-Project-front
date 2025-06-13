@@ -1,1 +1,9 @@
 export { default as Home } from './Home/Home';
+
+// صفحات المصادقة
+export { default as Login } from './Auth/Login';
+export { default as Register } from './Auth/Register';
+export { default as ForgotPassword } from './Auth/ForgotPassword';
+export { default as ResetPassword } from './Auth/ResetPassword';
+export { default as ChangePassword } from './Auth/ChangePassword';
+export { default as Profile } from './Auth/Profile';

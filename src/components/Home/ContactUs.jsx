@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const ContactUs = () => {
@@ -12,6 +12,16 @@ const ContactUs = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [mapLoaded, setMapLoaded] = useState(false);
+
+  // تأخير تحميل الخريطة لمنع مشاكل التحميل
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMapLoaded(true);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -253,7 +263,7 @@ const ContactUs = () => {
         </div>
 
         {/* خريطة الموقع */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -261,18 +271,24 @@ const ContactUs = () => {
           className="mt-16"
         >
           <div className="bg-gray-200 h-96 rounded-lg overflow-hidden">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.674457239337!2d46.675291076117186!3d24.713454274657!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f03890d489399%3A0xa11ce0f930dd0c36!2sKing%20Saud%20University!5e0!3m2!1sen!2ssa!4v1686682943736!5m2!1sen!2ssa"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="خريطة الموقع"
-            ></iframe>
+            {mapLoaded ? (
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.674457239337!2d46.675291076117186!3d24.713454274657!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f03890d489399%3A0xa11ce0f930dd0c36!2sKing%20Saud%20University!5e0!3m2!1sen!2ssa!4v1686682943736!5m2!1sen!2ssa"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="خريطة الموقع"
+              ></iframe>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+              </div>
+            )}
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );
