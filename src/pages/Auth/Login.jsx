@@ -26,6 +26,7 @@ const Login = () => {
     try {
       await AuthService.login(formData.email, formData.password);
       navigate('/');
+      window.location.reload();
     } catch (err) {
       setError(err.message || 'حدث خطأ أثناء تسجيل الدخول');
     } finally {

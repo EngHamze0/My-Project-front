@@ -1,6 +1,8 @@
 export { default as Navbar } from './Layout/Navbar';
 export { default as Footer } from './Layout/Footer';
 export { default as Layout } from './Layout/Layout';
+export { default as Sidebar } from './Layout/Sidebar';
+export { default as MainSidebar } from './Layout/MainSidebar';
 export { default as AboutUs } from './Home/AboutUs';
 export { default as ContactUs } from './Home/ContactUs';
 export { default as FAQ } from './Home/FAQ';

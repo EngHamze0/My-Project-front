@@ -40,6 +40,7 @@ const Register = () => {
         password: formData.password,
       });
       navigate('/');
+      window.location.reload();
     } catch (err) {
       setError(err.message || 'حدث خطأ أثناء التسجيل');
     } finally {
