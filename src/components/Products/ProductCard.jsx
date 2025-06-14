@@ -92,7 +92,7 @@ const ProductCard = ({ product, onFavoriteToggle }) => {
             product.type === 'solar_panel' ? 'bg-green-100 text-green-800' :
             'bg-purple-100 text-purple-800'
           }`}>
-            {product.type_label}
+            {product.type_label ? product.type_label : product.type === 'battery' ? 'بطارية' : product.type === 'solar_panel' ? 'لوح طاقة شمسية' :product.type === 'inverter' ? 'انفينتر' : 'غير معروف'}
           </span>
         </div>
         

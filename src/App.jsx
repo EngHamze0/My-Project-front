@@ -26,6 +26,7 @@ function App() {
           <Route element={<RequireAuth />}>
             <Route path="change-password" element={<pages.ChangePassword />} />
             <Route path="profile" element={<pages.Profile />} />
+            <Route path="favorite" element={<pages.Favorite />} />
   
           </Route>
         </Route>

@@ -91,6 +91,9 @@ const Navbar = () => {
                   <Link to="/profile" className="block px-4 py-2 text-sm text-white hover:bg-primary-500/20 transition-colors duration-300">
                     الملف الشخصي
                   </Link>
+                  <Link to="/favorite" className="block px-4 py-2 text-sm text-white hover:bg-primary-500/20 transition-colors duration-300">
+                   المفضلة
+                  </Link>
                   <Link to="/change-password" className="block px-4 py-2 text-sm text-white hover:bg-primary-500/20 transition-colors duration-300">
                     تغيير كلمة المرور
                   </Link>
