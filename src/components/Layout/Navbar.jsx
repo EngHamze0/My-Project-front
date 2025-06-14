@@ -94,6 +94,9 @@ const Navbar = () => {
                   <Link to="/change-password" className="block px-4 py-2 text-sm text-white hover:bg-primary-500/20 transition-colors duration-300">
                     تغيير كلمة المرور
                   </Link>
+                  {currentUser.role === 'admin' && <Link to="/dashboard" className="block px-4 py-2 text-sm text-white hover:bg-primary-500/20 transition-colors duration-300">
+                    لوحة التحكم
+                  </Link>}
                   <button
                     onClick={handleLogout}
                     className="block w-full text-right px-4 py-2 text-sm text-red-400 hover:bg-red-500/20 transition-colors duration-300"

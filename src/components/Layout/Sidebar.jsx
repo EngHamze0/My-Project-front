@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SideBar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const location = useLocation();
+  const nav = useNavigate()
   
   // قائمة العناصر الرئيسية
   const menuItems = [
@@ -125,9 +126,10 @@ const SideBar = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="font-bold text-xl text-primary-500"
+            className="font-bold text-xl hover:cursor-pointer text-primary-500"
+            onClick={() => nav('/')}
           >
-            لوحة التحكم
+            العودة الى الموقع
           </motion.div>
         )}
         <button
