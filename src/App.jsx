@@ -33,7 +33,9 @@ function App() {
           <Route path="/dashboard" element={<components.MainSidebar />}>
             <Route index element={<pages.Dashboard />} />
             <Route path="/dashboard/products" element={<pages.PoductsList />} />
+            <Route path="/dashboard/product/:id" element={<pages.SingleProduct />} />
             <Route path="/dashboard/products/add" element={<pages.AddProduct />} />
+            <Route path="/dashboard/products/edit/:id" element={<pages.EditProduct />} />
           
           </Route>
         </Route>
