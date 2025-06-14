@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* home */}
+        {/* public  */}
         <Route path="/" element={<components.Layout />}>
           <Route index element={<pages.Home />} />
 
@@ -30,6 +30,7 @@ function App() {
             <Route path="change-password" element={<pages.ChangePassword />} />
             <Route path="profile" element={<pages.Profile />} />
             <Route path="favorite" element={<pages.Favorite />} />
+            <Route path="subscriptions" element={<pages.MySubscriptions />} />
   
           </Route>
         </Route>
@@ -50,6 +51,7 @@ function App() {
             <Route path="/dashboard/services/add" element={<pages.AddServices />} />
             <Route path="/dashboard/services/edit/:id" element={<pages.EditServices />} />
 
+            <Route path="/dashboard/subscriptions" element={<pages.AllSubscriptions />} />
 
           
           </Route>
