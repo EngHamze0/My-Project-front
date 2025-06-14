@@ -35,6 +35,7 @@ const Navbar = () => {
   const navLinks = [
     { title: 'الرئيسية', path: '/' },
     { title: 'منتجاتنا', path: '/products' },
+    { title: 'خدماتنا', path: '/services' },
     { title: 'من نحن', path: '/about' },
     { title: 'تواصل معنا', path: '/contact' },
   ];

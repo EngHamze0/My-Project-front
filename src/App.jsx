@@ -20,6 +20,9 @@ function App() {
           <Route path="reset-password" element={<pages.ResetPassword />} />
           <Route path="products" element={<pages.ProductsPage />} />
           <Route path="products/:id" element={<pages.Product />} />
+          <Route path="services" element={<pages.ServicesPage />} />
+          <Route path="services/:id" element={<pages.ServiceDetails />} />
+
 
 
           {/* مسارات المصادقة */}
@@ -40,6 +43,14 @@ function App() {
             <Route path="/dashboard/product/:id" element={<pages.SingleProduct />} />
             <Route path="/dashboard/products/add" element={<pages.AddProduct />} />
             <Route path="/dashboard/products/edit/:id" element={<pages.EditProduct />} />
+
+
+            <Route path="/dashboard/services" element={<pages.Services />} />
+            <Route path="/dashboard/services/:id" element={<pages.Service />} />
+            <Route path="/dashboard/services/add" element={<pages.AddServices />} />
+            <Route path="/dashboard/services/edit/:id" element={<pages.EditServices />} />
+
+
           
           </Route>
         </Route>

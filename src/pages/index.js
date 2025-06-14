@@ -10,6 +10,8 @@ export { default as Profile } from './Auth/Profile';
 export { default as ProductsPage } from './products/ProductsPage';
 export { default as Product } from './products/Product';
 export { default as Favorite } from './products/Favorite';
+export { default as ServicesPage } from './Services/ServicesPage';
+export { default as ServiceDetails } from './Services/ServiceDetails';
 
 
 
@@ -19,3 +21,9 @@ export { default as PoductsList } from './Dashboard/Products/ProductsList';
 export { default as AddProduct } from './Dashboard/Products/AddProduct';
 export { default as SingleProduct } from './Dashboard/Products/SingleProduct';
 export { default as EditProduct } from './Dashboard/Products/EditProduct';
+
+export { default as Services } from './Dashboard/Services/Services';
+export { default as AddServices } from './Dashboard/Services/AddServices';
+export { default as EditServices } from './Dashboard/Services/EditServices';
+export { default as Service } from './Dashboard/Services/Service';
+
