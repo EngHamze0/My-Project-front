@@ -18,8 +18,11 @@ function App() {
           <Route path="register" element={<pages.Register />} />
           <Route path="forgot-password" element={<pages.ForgotPassword />} />
           <Route path="reset-password" element={<pages.ResetPassword />} />
-          {/* مسارات المصادقة */}
+          <Route path="products" element={<pages.ProductsPage />} />
+          <Route path="products/:id" element={<pages.Product />} />
 
+
+          {/* مسارات المصادقة */}
           <Route element={<RequireAuth />}>
             <Route path="change-password" element={<pages.ChangePassword />} />
             <Route path="profile" element={<pages.Profile />} />
