@@ -7,4 +7,9 @@ export { default as ForgotPassword } from './Auth/ForgotPassword';
 export { default as ResetPassword } from './Auth/ResetPassword';
 export { default as ChangePassword } from './Auth/ChangePassword';
 export { default as Profile } from './Auth/Profile';
+
+
+
 export { default as Dashboard } from './Dashboard/Dashboard';
+export { default as PoductsList } from './Dashboard/Products/PoductsList';
+export { default as AddProduct } from './Dashboard/Products/AddProduct';

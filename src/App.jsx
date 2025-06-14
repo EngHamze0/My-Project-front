@@ -23,6 +23,7 @@ function App() {
           <Route element={<RequireAuth />}>
             <Route path="change-password" element={<pages.ChangePassword />} />
             <Route path="profile" element={<pages.Profile />} />
+  
           </Route>
         </Route>
 
@@ -31,11 +32,17 @@ function App() {
         <Route element={<RequireAuthAdmin />}>
           <Route path="/dashboard" element={<components.MainSidebar />}>
             <Route index element={<pages.Dashboard />} />
+            <Route path="/dashboard/products" element={<pages.PoductsList />} />
+            <Route path="/dashboard/products/add" element={<pages.AddProduct />} />
+          
           </Route>
         </Route>
       </Routes>
     </Router>
   );
 }
+
+
+
 
 export default App;
