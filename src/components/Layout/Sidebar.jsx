@@ -114,7 +114,9 @@ const SideBar = () => {
       variants={sidebarVariants}
       initial="open"
       animate={isOpen ? 'open' : 'closed'}
-      className="fixed top-0 right-0 h-screen bg-dark text-white shadow-lg overflow-hidden z-40"
+    //   className="h-screen bg-dark text-white shadow-lg overflow-hidden relative"
+      className="relative  h-screen bg-dark text-white shadow-lg overflow-hidden "
+    //   className="fixed top-0 right-0 h-screen bg-dark text-white shadow-lg overflow-hidden z-40"
     >
       {/* رأس القائمة الجانبية */}
       <div className="flex items-center justify-between p-4 border-b border-gray-700">
@@ -145,6 +147,7 @@ const SideBar = () => {
       </div>
 
       {/* عناصر القائمة */}
+      {/* <div className="py-4 overflow-y-auto h-[calc(100vh-64px)]"></div> */}
       <div className="py-4 overflow-y-auto h-[calc(100vh-64px-64px)]">
         <ul className="space-y-2 px-2">
           {menuItems.map((item, index) => (
