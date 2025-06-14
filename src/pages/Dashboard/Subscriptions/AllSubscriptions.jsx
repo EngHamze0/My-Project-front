@@ -4,6 +4,7 @@ import api from '../../../services/api';
 
 const AllSubscriptions = () => {
   const [subscriptions, setSubscriptions] = useState([]);
+  const [filteredSubscriptions, setFilteredSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filters, setFilters] = useState({
@@ -12,6 +13,8 @@ const AllSubscriptions = () => {
     page: 1,
     per_page: 10
   });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [pagination, setPagination] = useState({
     total: 0,
     currentPage: 1,
@@ -23,32 +26,45 @@ const AllSubscriptions = () => {
 
   useEffect(() => {
     fetchSubscriptions();
-  }, [filters]);
+  }, []);
+
+  // فلترة الاشتراكات عند تغيير مصطلح البحث أو حالة الفلتر
+  useEffect(() => {
+    if (subscriptions.length > 0) {
+      filterSubscriptions();
+    }
+  }, [searchTerm, statusFilter, subscriptions]);
+
+  // وظيفة فلترة الاشتراكات
+  const filterSubscriptions = () => {
+    let results = [...subscriptions];
+    
+    // فلترة حسب مصطلح البحث (اسم الخدمة أو اسم المستخدم)
+    if (searchTerm.trim() !== '') {
+      const searchTermLower = searchTerm.toLowerCase().trim();
+      results = results.filter(subscription => 
+        subscription.service.name.toLowerCase().includes(searchTermLower) || 
+        subscription.user.name.toLowerCase().includes(searchTermLower) ||
+        subscription.user.email.toLowerCase().includes(searchTermLower)
+      );
+    }
+    
+    // فلترة حسب الحالة
+    if (statusFilter !== '') {
+      results = results.filter(subscription => subscription.status === statusFilter);
+    }
+    
+    setFilteredSubscriptions(results);
+  };
 
   // جلب الاشتراكات
   const fetchSubscriptions = async () => {
     setLoading(true);
     try {
-      const queryParams = new URLSearchParams();
-      
-      if (filters.status) queryParams.append('status', filters.status);
-      if (filters.search) queryParams.append('search', filters.search);
-      queryParams.append('page', filters.page);
-      queryParams.append('per_page', filters.per_page);
-      
-      const response = await api.get(`/subscriptions?${queryParams.toString()}`);
-      
-      setSubscriptions(response.data.data);
-      
-      // تعيين بيانات الترقيم إذا كانت متوفرة في الاستجابة
-      if (response.data.meta) {
-        setPagination({
-          total: response.data.meta.total || 0,
-          currentPage: response.data.meta.current_page || 1,
-          lastPage: response.data.meta.last_page || 1
-        });
-      }
-      
+      const response = await api.get(`/subscriptions`);
+      const data = response.data.data;
+      setSubscriptions(data);
+      setFilteredSubscriptions(data);
       setError('');
     } catch (err) {
       console.error('Error fetching subscriptions:', err);
@@ -65,13 +81,13 @@ const AllSubscriptions = () => {
       await api.get(`/subscriptions/${subscriptionId}/cancel`);
       
       // تحديث حالة الاشتراك في القائمة المحلية
-      setSubscriptions(prevSubscriptions => 
-        prevSubscriptions.map(sub => 
-          sub.id === subscriptionId 
-            ? { ...sub, status: 'cancelled' } 
-            : sub
-        )
+      const updatedSubscriptions = subscriptions.map(sub => 
+        sub.id === subscriptionId 
+          ? { ...sub, status: 'cancelled' } 
+          : sub
       );
+      
+      setSubscriptions(updatedSubscriptions);
       
       // إغلاق مربع التأكيد وعرض إشعار نجاح
       setConfirmDialog({ show: false, type: null, subscriptionId: null, serviceName: '', userName: '' });
@@ -133,25 +149,6 @@ const AllSubscriptions = () => {
     }, 3000);
   };
 
-  // التعامل مع تغيير الفلاتر
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters(prev => ({
-      ...prev,
-      [name]: value,
-      page: 1 // إعادة تعيين الصفحة عند تغيير الفلاتر
-    }));
-  };
-
-  // التعامل مع تغيير الصفحة
-  const handlePageChange = (page) => {
-    if (page < 1 || page > pagination.lastPage) return;
-    setFilters(prev => ({
-      ...prev,
-      page
-    }));
-  };
-
   // تنسيق التاريخ
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -200,74 +197,6 @@ const AllSubscriptions = () => {
       default:
         return 'bg-gray-100 text-gray-800';
     }
-  };
-
-  // تحضير أزرار الترقيم
-  const renderPaginationButtons = () => {
-    const buttons = [];
-    const maxButtons = 5; // عدد الأزرار التي ستظهر
-    
-    let startPage = Math.max(1, pagination.currentPage - Math.floor(maxButtons / 2));
-    let endPage = Math.min(pagination.lastPage, startPage + maxButtons - 1);
-    
-    if (endPage - startPage + 1 < maxButtons) {
-      startPage = Math.max(1, endPage - maxButtons + 1);
-    }
-    
-    // زر الصفحة السابقة
-    buttons.push(
-      <button
-        key="prev"
-        onClick={() => handlePageChange(pagination.currentPage - 1)}
-        disabled={pagination.currentPage === 1}
-        className={`px-3 py-1 mx-1 rounded ${
-          pagination.currentPage === 1
-            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-            : 'bg-white text-gray-700 hover:bg-gray-100'
-        } border`}
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-        </svg>
-      </button>
-    );
-    
-    // أزرار الصفحات
-    for (let i = startPage; i <= endPage; i++) {
-      buttons.push(
-        <button
-          key={i}
-          onClick={() => handlePageChange(i)}
-          className={`px-3 py-1 mx-1 rounded ${
-            pagination.currentPage === i
-              ? 'bg-primary-500 text-white'
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          } border`}
-        >
-          {i}
-        </button>
-      );
-    }
-    
-    // زر الصفحة التالية
-    buttons.push(
-      <button
-        key="next"
-        onClick={() => handlePageChange(pagination.currentPage + 1)}
-        disabled={pagination.currentPage === pagination.lastPage}
-        className={`px-3 py-1 mx-1 rounded ${
-          pagination.currentPage === pagination.lastPage
-            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-            : 'bg-white text-gray-700 hover:bg-gray-100'
-        } border`}
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-        </svg>
-      </button>
-    );
-    
-    return buttons;
   };
 
   return (
@@ -340,8 +269,8 @@ const AllSubscriptions = () => {
               type="text"
               id="search"
               name="search"
-              value={filters.search}
-              onChange={handleFilterChange}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="بحث باسم المستخدم أو الخدمة..."
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
             />
@@ -351,8 +280,8 @@ const AllSubscriptions = () => {
             <select
               id="status"
               name="status"
-              value={filters.status}
-              onChange={handleFilterChange}
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
             >
               <option value="">جميع الحالات</option>
@@ -364,14 +293,39 @@ const AllSubscriptions = () => {
           </div>
           <div className="flex items-end">
             <button
+              onClick={() => {
+                setSearchTerm('');
+                setStatusFilter('');
+              }}
+              className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors mr-2"
+            >
+              إعادة تعيين
+            </button>
+            <button
               onClick={() => fetchSubscriptions()}
               className="px-4 py-2 bg-primary-500 text-white rounded-md hover:bg-primary-600 transition-colors"
             >
-              تطبيق الفلاتر
+              تحديث
             </button>
           </div>
         </div>
       </div>
+
+      {/* معلومات الفلتر */}
+      {(searchTerm || statusFilter) && (
+        <div className="mb-4 p-2 bg-blue-50 text-blue-700 rounded-md">
+          <div className="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>
+              {`عرض ${filteredSubscriptions.length} من أصل ${subscriptions.length} اشتراك`}
+              {searchTerm && ` (البحث: ${searchTerm})`}
+              {statusFilter && ` (الحالة: ${translateStatus(statusFilter)})`}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* جدول الاشتراكات */}
       {loading ? (
@@ -383,7 +337,7 @@ const AllSubscriptions = () => {
           <p className="font-bold">خطأ</p>
           <p>{error}</p>
         </div>
-      ) : subscriptions.length === 0 ? (
+      ) : filteredSubscriptions.length === 0 ? (
         <div className="bg-yellow-50 p-4 rounded-md text-center">
           <p className="text-yellow-700">لا توجد اشتراكات مطابقة للفلاتر المحددة</p>
         </div>
@@ -417,7 +371,7 @@ const AllSubscriptions = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {subscriptions.map((subscription) => (
+                {filteredSubscriptions.map((subscription) => (
                   <tr key={subscription.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -478,13 +432,6 @@ const AllSubscriptions = () => {
               </tbody>
             </table>
           </div>
-
-          {/* ترقيم الصفحات */}
-          {pagination.lastPage > 1 && (
-            <div className="flex justify-center mt-6">
-              <div className="flex">{renderPaginationButtons()}</div>
-            </div>
-          )}
         </>
       )}
     </div>
