@@ -120,7 +120,7 @@ const SideBar = () => {
     >
       {/* رأس القائمة الجانبية */}
       <div className="flex items-center justify-between p-4 border-b border-gray-700">
-        {/* {isOpen && (
+        {isOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -129,7 +129,7 @@ const SideBar = () => {
           >
             لوحة التحكم
           </motion.div>
-        )} */}
+        )}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="p-2 rounded-md hover:bg-gray-700 transition-colors"
