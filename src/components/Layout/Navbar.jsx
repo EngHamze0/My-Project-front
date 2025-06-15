@@ -167,18 +167,18 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-              <Link
-                to="/login"
+          <Link
+            to="/login"
                 className="bg-transparent mx-1 border border-primary-500 text-primary-500 px-4 py-2 rounded-2xl hover:bg-primary-500 hover:text-dark-light transition-colors duration-300"
-              >
-                دخول
-              </Link>
-              <Link
-                to="/register"
+          >
+            دخول
+          </Link>
+          <Link
+            to="/register"
                 className="bg-primary-500 mx-1 text-dark-light hover:text-white px-4 py-2 rounded-2xl hover:bg-primary-600 transition-colors duration-300"
-              >
-                تسجيل
-              </Link>
+          >
+            تسجيل
+          </Link>
             </>
           )}
         </div>
@@ -286,21 +286,21 @@ const Navbar = () => {
               </>
             ) : (
               <div className="flex flex-col space-y-3 pt-3 border-t border-gray-700">
-                <Link
-                  to="/login"
+              <Link
+                to="/login"
                   className="bg-transparent border border-primary-500 text-primary-500 px-4 py-2 rounded-2xl hover:bg-primary-500 hover:text-dark-light transition-colors duration-300 text-center mt-2"
-                  onClick={toggleMenu}
-                >
-                  دخول
-                </Link>
-                <Link
-                  to="/register"
+                onClick={toggleMenu}
+              >
+                دخول
+              </Link>
+              <Link
+                to="/register"
                   className="bg-primary-500 text-dark-light px-4 py-2 rounded-2xl hover:bg-primary-600 hover:text-white transition-colors duration-300 text-center"
-                  onClick={toggleMenu}
-                >
-                  تسجيل
-                </Link>
-              </div>
+                onClick={toggleMenu}
+              >
+                تسجيل
+              </Link>
+            </div>
             )}
           </div>
         </motion.div>

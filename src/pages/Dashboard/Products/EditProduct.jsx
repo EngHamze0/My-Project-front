@@ -455,7 +455,7 @@ const EditProduct = () => {
                     <p className="text-sm text-gray-500">
                       صورة {index + 1}
                     </p>
-                  </div>
+    </div>
                   
                   {imagesPreviews[index] ? (
                     <div className="relative">

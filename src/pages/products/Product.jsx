@@ -430,7 +430,7 @@ const Product = () => {
               </button>
             </div>
           </div>
-        </div>
+    </div>
         
         {/* المواصفات */}
         {product.specifications && (
