@@ -36,3 +36,8 @@ export { default as Service } from './Dashboard/Services/Service';
 export { default as OrdersList } from './Dashboard/Orders/OrdersList';
 export { default as OrderDetails } from './Dashboard/Orders/OrderDetails';
 
+// صفحات إدارة الكوبونات
+export { default as CouponsList } from './Dashboard/Coupons/CouponsList';
+export { default as AddCoupon } from './Dashboard/Coupons/AddCoupon';
+export { default as CouponDetails } from './Dashboard/Coupons/CouponDetails';
+

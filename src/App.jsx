@@ -61,6 +61,10 @@ function App() {
             <Route path="/dashboard/orders" element={<pages.OrdersList />} />
             <Route path="/dashboard/orders/:id" element={<pages.OrderDetails />} />
           
+            {/* مسارات إدارة الكوبونات */}
+            <Route path="/dashboard/coupons" element={<pages.CouponsList />} />
+            <Route path="/dashboard/coupons/add" element={<pages.AddCoupon />} />
+            <Route path="/dashboard/coupons/:id" element={<pages.CouponDetails />} />
           </Route>
         </Route>
       </Routes>
