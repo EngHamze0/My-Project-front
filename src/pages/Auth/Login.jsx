@@ -1,9 +1,11 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useState } from 'react';
+import { Link, useNavigate , useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import AuthService from '../../services/auth';
 
 const Login = () => {
+  const location = useLocation();
+  
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -25,7 +27,11 @@ const Login = () => {
 
     try {
       await AuthService.login(formData.email, formData.password);
+      if (location.state?.returnUrl) {
+      navigate(location.state.returnUrl);
+    }else{
       navigate('/');
+    }
       window.location.reload();
     } catch (err) {
       setError(err.message || 'حدث خطأ أثناء تسجيل الدخول');
@@ -33,6 +39,7 @@ const Login = () => {
       setLoading(false);
     }
   };
+
 
   return (
     <motion.div
