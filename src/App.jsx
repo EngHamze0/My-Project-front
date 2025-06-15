@@ -65,6 +65,11 @@ function App() {
             <Route path="/dashboard/coupons" element={<pages.CouponsList />} />
             <Route path="/dashboard/coupons/add" element={<pages.AddCoupon />} />
             <Route path="/dashboard/coupons/:id" element={<pages.CouponDetails />} />
+
+            {/* مسارات إدارة المستخدمين */}
+            <Route path="/dashboard/users" element={<pages.UsersList />} />
+            <Route path="/dashboard/users/add" element={<pages.AddUser />} />
+            <Route path="/dashboard/users/:id" element={<pages.EditUser />} />
           </Route>
         </Route>
       </Routes>

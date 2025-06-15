@@ -41,3 +41,8 @@ export { default as CouponsList } from './Dashboard/Coupons/CouponsList';
 export { default as AddCoupon } from './Dashboard/Coupons/AddCoupon';
 export { default as CouponDetails } from './Dashboard/Coupons/CouponDetails';
 
+// صفحات إدارة المستخدمين
+export { default as UsersList } from './Dashboard/Users/UsersList';
+export { default as AddUser } from './Dashboard/Users/AddUser';
+export { default as EditUser } from './Dashboard/Users/EditUser';
+
