@@ -16,12 +16,10 @@ export { default as Favorite } from './products/Favorite';
 export { default as ServicesPage } from './Services/ServicesPage';
 export { default as ServiceDetails } from './Services/ServiceDetails';
 export { default as MySubscriptions } from './Subscriptions/MySubscriptions';
-
-
-
+export { default as MyOrders } from './order/MyOrders';
+export { default as UserOrderDetails } from './order/OrderDetails';
 
 export { default as Dashboard } from './Dashboard/Dashboard';
-
 
 export { default as AllSubscriptions } from './Dashboard/Subscriptions/AllSubscriptions';
 
