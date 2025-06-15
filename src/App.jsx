@@ -20,6 +20,7 @@ function App() {
           <Route path="reset-password" element={<pages.ResetPassword />} />
           <Route path="products" element={<pages.ProductsPage />} />
           <Route path="products/:id" element={<pages.Product />} />
+          <Route path="cart" element={<pages.Cart />} />
           <Route path="services" element={<pages.ServicesPage />} />
           <Route path="services/:id" element={<pages.ServiceDetails />} />
 

@@ -7,6 +7,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,7 +16,37 @@ const Navbar = () => {
     if (user) {
       setCurrentUser(user);
     }
+    
+    // جلب عدد العناصر في السلة
+    loadCartCount();
+    
+    // الاستماع لأحداث تحديث السلة
+    window.addEventListener('cartUpdated', handleCartUpdate);
+    
+    return () => {
+      window.removeEventListener('cartUpdated', handleCartUpdate);
+    };
   }, []);
+
+  // تحديث عدد العناصر في السلة عند تغييرها
+  const handleCartUpdate = (event) => {
+    if (event.detail && event.detail.count !== undefined) {
+      setCartCount(event.detail.count);
+    } else {
+      loadCartCount();
+    }
+  };
+
+  // جلب عدد العناصر في السلة من localStorage
+  const loadCartCount = () => {
+    try {
+      const count = localStorage.getItem('cartCount');
+      setCartCount(count ? parseInt(count) : 0);
+    } catch (error) {
+      console.error('Error loading cart count:', error);
+      setCartCount(0);
+    }
+  };
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -64,6 +95,19 @@ const Navbar = () => {
 
         {/* أزرار التسجيل والدخول أو معلومات المستخدم */}
         <div className="hidden md:flex items-center space-x-6 rtl:space-x-reverse">
+          {/* زر سلة المشتريات */}
+
+          {localStorage.getItem('token') && <Link to="/cart" className="relative text-white hover:text-primary-400 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-primary-500 text-dark-light text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                {cartCount > 99 ? '99+' : cartCount}
+              </span>
+            )}
+          </Link>}
+          
           {currentUser ? (
             <div className="relative">
               <button
@@ -97,6 +141,9 @@ const Navbar = () => {
                   </Link>
                   <Link to="/favorite" className="block px-4 py-2 text-sm text-white hover:bg-primary-500/20 transition-colors duration-300">
                    المفضلة
+                  </Link>
+                  <Link to="/cart" className="block px-4 py-2 text-sm text-white hover:bg-primary-500/20 transition-colors duration-300">
+                   سلة المشتريات
                   </Link>
                   <Link to="/change-password" className="block px-4 py-2 text-sm text-white hover:bg-primary-500/20 transition-colors duration-300">
                     تغيير كلمة المرور
@@ -132,7 +179,19 @@ const Navbar = () => {
         </div>
 
         {/* زر القائمة للشاشات الصغيرة */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center">
+          {/* زر سلة المشتريات للشاشات الصغيرة */}
+          { localStorage.getItem('token') && <Link to="/cart" className="relative text-white hover:text-primary-400 transition-colors duration-300 ml-4">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-primary-500 text-dark-light text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                {cartCount > 99 ? '99+' : cartCount}
+              </span>
+            )}
+          </Link>}
+          
           <button
             onClick={toggleMenu}
             className="text-white hover:text-primary-400 focus:outline-none"
@@ -185,6 +244,20 @@ const Navbar = () => {
                     onClick={toggleMenu}
                   >
                     الملف الشخصي
+                  </Link>
+                  <Link 
+                    to="/subscriptions" 
+                    className="block py-2 text-sm text-white hover:text-primary-400 transition-colors duration-300"
+                    onClick={toggleMenu}
+                  >
+                    الاشتراكات الخاصة بي
+                  </Link>
+                  <Link 
+                    to="/favorite" 
+                    className="block py-2 text-sm text-white hover:text-primary-400 transition-colors duration-300"
+                    onClick={toggleMenu}
+                  >
+                    المفضلة
                   </Link>
                   <Link 
                     to="/change-password" 

@@ -12,6 +12,7 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [favoriteLoading, setFavoriteLoading] = useState(false);
   const [notification, setNotification] = useState({ show: false, message: '', type: '' });
+  const [addingToCart, setAddingToCart] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -76,6 +77,67 @@ const Product = () => {
       showNotification('حدث خطأ أثناء تحديث المفضلة', 'error');
     } finally {
       setFavoriteLoading(false);
+    }
+  };
+
+  // إضافة المنتج إلى سلة المشتريات
+  const addToCart = () => {
+    if (!product) return;
+    
+    setAddingToCart(true);
+    
+    try {
+      // جلب السلة الحالية من localStorage
+      const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+      
+      // التحقق مما إذا كان المنتج موجودًا بالفعل في السلة
+      const existingItemIndex = cartItems.findIndex(item => item.id === product.id);
+      
+      if (existingItemIndex !== -1) {
+        // إذا كان المنتج موجودًا بالفعل، قم بتحديث الكمية
+        const newQuantity = cartItems[existingItemIndex].quantity + quantity;
+        
+        // التأكد من أن الكمية لا تتجاوز المخزون المتاح
+        if (newQuantity <= product.quantity) {
+          cartItems[existingItemIndex].quantity = newQuantity;
+        } else {
+          // إذا تجاوزت الكمية المخزون، اضبطها على الحد الأقصى
+          cartItems[existingItemIndex].quantity = product.quantity;
+          showNotification(`تم تحديث الكمية إلى الحد الأقصى المتاح (${product.quantity})`, 'info');
+        }
+      } else {
+        // إذا لم يكن المنتج موجودًا، أضفه إلى السلة
+        const cartItem = {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.primary_image?.image_url || (product.images && product.images.length > 0 ? product.images[0].image_url : null),
+          quantity: quantity,
+          max_quantity: product.quantity // تخزين الحد الأقصى للكمية المتاحة
+        };
+        
+        cartItems.push(cartItem);
+      }
+      
+      // حفظ السلة المحدثة في localStorage
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+      
+      // تحديث عدد العناصر في السلة (إذا كنت تستخدم مؤشر عدد العناصر)
+      const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+      localStorage.setItem('cartCount', cartCount.toString());
+      
+      // إطلاق حدث لإعلام المكونات الأخرى بتغيير السلة
+      window.dispatchEvent(new CustomEvent('cartUpdated', {
+        detail: { count: cartCount }
+      }));
+      
+      // عرض إشعار نجاح
+      showNotification('تمت إضافة المنتج إلى سلة المشتريات', 'success');
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      showNotification('حدث خطأ أثناء إضافة المنتج إلى السلة', 'error');
+    } finally {
+      setAddingToCart(false);
     }
   };
 
@@ -146,7 +208,9 @@ const Product = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-6 py-3 rounded-lg shadow-lg ${
-            notification.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            notification.type === 'success' ? 'bg-green-500 text-white' : 
+            notification.type === 'error' ? 'bg-red-500 text-white' : 
+            'bg-blue-500 text-white'
           }`}
         >
           <div className="flex items-center">
@@ -154,9 +218,13 @@ const Product = () => {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-            ) : (
+            ) : notification.type === 'error' ? (
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
             )}
             {notification.message}
@@ -305,12 +373,23 @@ const Product = () => {
             <div className="pt-4 space-y-3">
               {product.status === 'active' && product.quantity > 0 ? (
                 <button 
+                  onClick={addToCart}
+                  disabled={addingToCart}
                   className="w-full py-3 bg-primary-500 text-white rounded-md hover:bg-primary-600 transition-colors flex items-center justify-center"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                  إضافة إلى السلة
+                  {addingToCart ? (
+                    <>
+                      <div className="animate-spin h-5 w-5 border-2 border-t-transparent rounded-full ml-2"></div>
+                      جاري الإضافة...
+                    </>
+                  ) : (
+                    <>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                      إضافة إلى السلة
+                    </>
+                  )}
                 </button>
               ) : (
                 <button 

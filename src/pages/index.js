@@ -9,6 +9,7 @@ export { default as ChangePassword } from './Auth/ChangePassword';
 export { default as Profile } from './Auth/Profile';
 export { default as ProductsPage } from './products/ProductsPage';
 export { default as Product } from './products/Product';
+export { default as Cart } from './products/Cart';
 export { default as Favorite } from './products/Favorite';
 export { default as ServicesPage } from './Services/ServicesPage';
 export { default as ServiceDetails } from './Services/ServiceDetails';
