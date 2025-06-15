@@ -35,3 +35,6 @@ export { default as AddServices } from './Dashboard/Services/AddServices';
 export { default as EditServices } from './Dashboard/Services/EditServices';
 export { default as Service } from './Dashboard/Services/Service';
 
+export { default as OrdersList } from './Dashboard/Orders/OrdersList';
+export { default as OrderDetails } from './Dashboard/Orders/OrderDetails';
+

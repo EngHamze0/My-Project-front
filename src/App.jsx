@@ -56,6 +56,9 @@ function App() {
 
             <Route path="/dashboard/subscriptions" element={<pages.AllSubscriptions />} />
 
+            {/* مسارات إدارة الطلبات */}
+            <Route path="/dashboard/orders" element={<pages.OrdersList />} />
+            <Route path="/dashboard/orders/:id" element={<pages.OrderDetails />} />
           
           </Route>
         </Route>
