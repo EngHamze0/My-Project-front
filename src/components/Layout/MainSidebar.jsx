@@ -26,7 +26,7 @@ const MainSidebar = () => {
       
       {/* المحتوى الرئيسي */}
       <div className="flex-1 overflow-auto">
-        <div className="p-4 md:p-6">
+        <div className="p-4 md:p-6 h-[100vh] overflow-y-auto">
           <Outlet />
         </div>
       </div>
