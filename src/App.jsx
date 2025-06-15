@@ -32,6 +32,8 @@ function App() {
             <Route path="profile" element={<pages.Profile />} />
             <Route path="favorite" element={<pages.Favorite />} />
             <Route path="subscriptions" element={<pages.MySubscriptions />} />
+            <Route path="checkout" element={<pages.Checkout />} />
+            <Route path="order-success/:id" element={<pages.OrderSuccess />} />
   
           </Route>
         </Route>

@@ -10,6 +10,8 @@ export { default as Profile } from './Auth/Profile';
 export { default as ProductsPage } from './products/ProductsPage';
 export { default as Product } from './products/Product';
 export { default as Cart } from './products/Cart';
+export { default as Checkout } from './products/Checkout';
+export { default as OrderSuccess } from './products/OrderSuccess';
 export { default as Favorite } from './products/Favorite';
 export { default as ServicesPage } from './Services/ServicesPage';
 export { default as ServiceDetails } from './Services/ServiceDetails';

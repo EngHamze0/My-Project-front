@@ -106,8 +106,16 @@ const Cart = () => {
       return;
     }
     
-    // هنا يمكنك إضافة المنطق للانتقال إلى صفحة الدفع
-    navigate('/checkout');
+    // التحقق من تسجيل دخول المستخدم
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // إذا لم يكن المستخدم مسجل دخول، انتقل إلى صفحة تسجيل الدخول
+      navigate('/login', { state: { returnUrl: '/checkout' } });
+      showNotification('يرجى تسجيل الدخول للمتابعة', 'info');
+    } else {
+      // إذا كان المستخدم مسجل دخول، انتقل إلى صفحة الدفع
+      navigate('/checkout');
+    }
   };
 
   // عرض الإشعارات
