@@ -76,7 +76,7 @@ const Checkout = () => {
     setCouponError('');
     
     try {
-      const response = await api.post('/coupons/validateCoupon', {
+      const response = await api.post('/coupons/validate', {
         coupon_code: couponCode,
         subtotal: subtotal
       });
