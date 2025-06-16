@@ -50,7 +50,49 @@ const Product = () => {
       setQuantity(quantity - 1);
     }
   };
+  const renderSpecifications = () => {
+    if (!product.specifications) return null;
 
+    switch (product.type) {
+      case 'battery':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-gray-600">نوع البطارية: <span className="font-semibold">{product.specifications.type}</span></p>
+              <p className="text-gray-600">السعة: <span className="font-semibold">{product.specifications.capacity}</span></p>
+              <p className="text-gray-600">العمر الافتراضي: <span className="font-semibold">{product.specifications.battary_life}</span></p>
+              <p className="text-gray-600">الفولتية: <span className="font-semibold">{product.specifications.voltage}</span></p>
+            </div>
+          </div>
+        );
+      
+      case 'inverter':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              {/* <p className="text-gray-600">الفولتية: <span className="font-semibold">{product.specifications.voltage}</span></p> */}
+              <p className="text-gray-600">المدخل: <span className="font-semibold">{product.specifications.input}</span></p>
+              <p className="text-gray-600">تيار الشحن: <span className="font-semibold">{product.specifications.charging_current}</span></p>
+              <p className="text-gray-600">فولتية التيار المستمر: <span className="font-semibold">{product.specifications.DC_volr}</span></p>
+            </div>
+          </div>
+        );
+      
+      case 'solar_panel':
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-gray-600">المخرجات: <span className="font-semibold">{product.specifications.output}</span></p>
+              <p className="text-gray-600">مساحة السطح: <span className="font-semibold">{product.specifications.surface_area}</span></p>
+              <p className="text-gray-600">النوع: <span className="font-semibold">{product.specifications.type}</span></p>
+            </div>
+          </div>
+        );
+      
+      default:
+        return null;
+    }
+  };
   // إضافة أو إزالة من المفضلة
   const toggleFavorite = async () => {
     if (!product) return;
@@ -432,15 +474,11 @@ const Product = () => {
           </div>
     </div>
         
-        {/* المواصفات */}
-        {product.specifications && (
-          <div className="p-6 border-t border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">المواصفات</h2>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <pre className="whitespace-pre-wrap text-gray-700">{product.specifications}</pre>
-            </div>
+     
+        <div>
+            <h2 className="text-lg font-semibold text-gray-700 mb-2">المواصفات</h2>
+            {renderSpecifications()}
           </div>
-        )}
         
         {/* معلومات إضافية */}
         <div className="p-6 border-t border-gray-200">

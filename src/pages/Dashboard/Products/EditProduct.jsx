@@ -14,7 +14,8 @@ const EditProduct = () => {
     quantity: '',
     type: '',
     status: 'active',
-    primary_image_index: 0
+    primary_image_index: 0,
+    specifications: {}
   });
 
   const [images, setImages] = useState([]);
@@ -53,7 +54,8 @@ const EditProduct = () => {
           quantity: product.quantity,
           type: product.type,
           status: product.status,
-          primary_image_index: 0
+          primary_image_index: 0,
+          specifications: product.specifications || {}
         });
         
         // Setup existing images
@@ -82,7 +84,19 @@ const EditProduct = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    if (name.startsWith('specifications.')) {
+      const specField = name.split('.')[1];
+      setFormData(prev => ({
+        ...prev,
+        specifications: {
+          ...prev.specifications,
+          [specField]: value
+        }
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
     setError('');
   };
 
@@ -187,7 +201,12 @@ const EditProduct = () => {
       
       // Add basic data
       Object.keys(formData).forEach(key => {
-        if (key !== 'primary_image_index' || images[formData.primary_image_index] !== null) {
+        if (key === 'specifications') {
+          // إضافة كل حقل من specifications بشكل منفصل
+          Object.entries(formData.specifications).forEach(([specKey, specValue]) => {
+            productFormData.append(`specifications[${specKey}]`, specValue);
+          });
+        } else if (key !== 'primary_image_index' || images[formData.primary_image_index] !== null) {
           productFormData.append(key, formData[key]);
         }
       });
@@ -207,9 +226,8 @@ const EditProduct = () => {
       imagesToDelete.forEach((imageId, index) => {
         productFormData.append(`images_to_delete[${index}]`, imageId);
       });
-      productFormData.append('testtt', "55555")
+
       // Send data to API (PUT request for update)
-      console.log("productFormData: " , productFormData)
       await api.post(`/products/${id}`, productFormData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -402,6 +420,204 @@ const EditProduct = () => {
           </div>
         </div>
         
+        {/* مواصفات المنتج */}
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary-500 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            مواصفات المنتج
+          </h2>
+          
+          {formData.type === 'battery' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="specifications.type" className="block text-sm font-medium text-gray-700 mb-1">
+                  نوع البطارية <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="specifications.type"
+                  name="specifications.type"
+                  value={formData.specifications.type || ''}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  placeholder="مثال: ليثيوم"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="specifications.capacity" className="block text-sm font-medium text-gray-700 mb-1">
+                  السعة <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="specifications.capacity"
+                  name="specifications.capacity"
+                  value={formData.specifications.capacity || ''}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  placeholder="مثال: 100Ah"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="specifications.battary_life" className="block text-sm font-medium text-gray-700 mb-1">
+                  العمر الافتراضي <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="specifications.battary_life"
+                  name="specifications.battary_life"
+                  value={formData.specifications.battary_life || ''}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  placeholder="مثال: 5 سنوات"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="specifications.voltage" className="block text-sm font-medium text-gray-700 mb-1">
+                  الفولتية <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="specifications.voltage"
+                  name="specifications.voltage"
+                  value={formData.specifications.voltage || ''}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  placeholder="مثال: 12V"
+                />
+              </div>
+            </div>
+          )}
+          
+          {formData.type === 'inverter' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* <div>
+                <label htmlFor="specifications.voltage" className="block text-sm font-medium text-gray-700 mb-1">
+                  الفولتية <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="specifications.voltage"
+                  name="specifications.voltage"
+                  value={formData.specifications.voltage || ''}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  placeholder="مثال: 220V"
+                />
+              </div> */}
+              
+              <div>
+                <label htmlFor="specifications.input" className="block text-sm font-medium text-gray-700 mb-1">
+                  المدخل <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="specifications.input"
+                  name="specifications.input"
+                  value={formData.specifications.input || ''}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  placeholder="مثال: 12V DC"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="specifications.charging_current" className="block text-sm font-medium text-gray-700 mb-1">
+                  تيار الشحن <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="specifications.charging_current"
+                  name="specifications.charging_current"
+                  value={formData.specifications.charging_current || ''}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  placeholder="مثال: 10A"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="specifications.DC_volr" className="block text-sm font-medium text-gray-700 mb-1">
+                  فولتية التيار المستمر <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="specifications.DC_volr"
+                  name="specifications.DC_volr"
+                  value={formData.specifications.DC_volr || ''}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  placeholder="مثال: 12V"
+                />
+              </div>
+            </div>
+          )}
+          
+          {formData.type === 'solar_panel' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="specifications.output" className="block text-sm font-medium text-gray-700 mb-1">
+                  المخرجات <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="specifications.output"
+                  name="specifications.output"
+                  value={formData.specifications.output || ''}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  placeholder="مثال: 100W"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="specifications.surface_area" className="block text-sm font-medium text-gray-700 mb-1">
+                  مساحة السطح <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="specifications.surface_area"
+                  name="specifications.surface_area"
+                  value={formData.specifications.surface_area || ''}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  placeholder="مثال: 1.7 متر مربع"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="specifications.type" className="block text-sm font-medium text-gray-700 mb-1">
+                  النوع <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="specifications.type"
+                  name="specifications.type"
+                  value={formData.specifications.type || ''}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  placeholder="مثال: مونو كريستال"
+                />
+              </div>
+            </div>
+          )}
+        </div>
+        
         {/* Product Images */}
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
           <div className="flex justify-between items-center mb-4">
@@ -455,7 +671,7 @@ const EditProduct = () => {
                     <p className="text-sm text-gray-500">
                       صورة {index + 1}
                     </p>
-    </div>
+                  </div>
                   
                   {imagesPreviews[index] ? (
                     <div className="relative">
