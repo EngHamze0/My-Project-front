@@ -25,6 +25,7 @@ function App() {
           <Route path="products" element={<pages.ProductsPage />} />
           <Route path="products/:id" element={<pages.Product />} />
           <Route path="cart" element={<pages.Cart />} />
+          <Route path="about" element={<components.AboutUs />} />
           <Route path="services" element={<pages.ServicesPage />} />
           <Route path="services/:id" element={<pages.ServiceDetails />} />
           <Route path="solar-system-calculator" element={<SolarSystemCalculator />} />
