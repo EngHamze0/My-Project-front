@@ -32,6 +32,7 @@ const Cart = () => {
     try {
       const items = JSON.parse(localStorage.getItem('cart') || '[]');
       setCartItems(items);
+      console.log(items);
     } catch (error) {
       console.error('Error loading cart items:', error);
       showNotification('حدث خطأ أثناء تحميل عناصر السلة', 'error');
@@ -211,7 +212,7 @@ const Cart = () => {
                       <div className="w-24 h-24 bg-gray-100 rounded-md overflow-hidden flex-shrink-0 mb-4 sm:mb-0">
                         {item.image ? (
                           <img 
-                            src={item.image} 
+                            src={item.image.startsWith('http') ? item.image : import.meta.env.VITE_API_URL_STORAGE  + item.image} 
                             alt={item.name} 
                             className="w-full h-full object-cover"
                           />

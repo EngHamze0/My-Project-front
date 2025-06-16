@@ -227,7 +227,7 @@ const Checkout = () => {
                       <div className="w-24 h-24 bg-gray-100 rounded-md overflow-hidden flex-shrink-0 mb-4 sm:mb-0">
                         {item.image ? (
                           <img 
-                            src={item.image} 
+                            src={item.image.startsWith('http') ? item.image : import.meta.env.VITE_API_URL_STORAGE  + item.image} 
                             alt={item.name} 
                             className="w-full h-full object-cover"
                           />
@@ -349,7 +349,7 @@ const Checkout = () => {
                 <button
                   onClick={submitOrder}
                   disabled={submitting}
-                  className="w-full py-3 bg-primary-500 text-white rounded-md hover:bg-primary-600 transition-colors mt-6 flex items-center justify-center"
+                  className="w-full py-3 bg-primary-600 text-white rounded-md hover:bg-primary-800 transition-colors mt-6 flex items-center justify-center"
                 >
                   {submitting ? (
                     <>
@@ -357,6 +357,13 @@ const Checkout = () => {
                       جاري إتمام الطلب...
                     </>
                   ) : 'إتمام الطلب'}
+                </button>
+                <button
+                  onClick={() => navigate('/services')}
+
+                  className="w-full py-3 bg-primary-600 text-white rounded-md hover:bg-primary-800 transition-colors mt-2 flex items-center justify-center"
+                >
+                 عرض خدمات الشركة
                 </button>
                 
                 <p className="text-xs text-gray-500 text-center mt-3">

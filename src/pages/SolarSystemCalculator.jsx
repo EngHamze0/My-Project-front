@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { motion } from 'framer-motion';
-import { FaSolarPanel, FaBatteryFull, FaBolt } from 'react-icons/fa';
 import api from '../services/api';
+import { useNavigate } from 'react-router-dom';
+
 
 // مكون حاسبة نظام الطاقة الشمسية مع اختيار المستخدم للمنتجات وحساب الكميات والتكلفة والتشغيل والشحن
 function SolarSystemCalculator() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,6 +28,12 @@ function SolarSystemCalculator() {
 
   // نتائج الملخص
   const [summary, setSummary] = useState(null);
+  const [results, setResults] = useState(null);
+  const [selectedComponents, setSelectedComponents] = useState({
+    panel: null,
+    inverter: null,
+    battery: null
+  });
 
   // عوامل التهيئة
   const SAFETY_FACTOR = 1.1; // هامش الأمان للإنفيرتر
@@ -161,6 +168,62 @@ function SolarSystemCalculator() {
     setSummary({ panel, panelQuantity, panelsCost, inverter: inverterItem, inverterCost, battery, seriesCount, parallelCount, totalBatteries, batteriesCost, runtimeActualPerString, totalRuntime, chargingTimePerString, chargingTimeAdjusted, totalCost, backupHours: bh });
   };
 
+  const handleAddToCart = () => {
+    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+
+    // if (!selectedComponents.panel || !selectedComponents.inverter) {
+    //   // toast.error('يرجى اختيار الألواح الشمسية ومحول الطاقة على الأقل');
+    //   return;
+    // }
+
+    // إضافة الألواح الشمسية
+    cartItems.push({
+      id: summary.panel.id,
+      name: summary.panel.name,
+      price: summary.panel.price,
+      quantity: summary.panelQuantity,
+      max_quantity: summary.panel.quantity,
+      image: summary.panel.primary_image?.image_path
+      ,
+      // type: 'solar_panel'
+    });
+
+    // إضافة محول الطاقة
+    cartItems.push({
+      id: summary.inverter.id,
+      name: summary.inverter.name,
+      price: summary.inverter.price,
+      quantity: 1,
+      max_quantity: summary.inverter.quantity,
+      image: summary.inverter.primary_image?.image_path,
+      // type: 'inverter'
+    });
+
+    // إضافة البطاريات إذا تم اختيارها
+    
+      
+
+      cartItems.push({
+        id: summary.battery.id,
+        name: summary.battery.name,
+        price: summary.battery.price,
+        quantity: 1,
+        max_quantity: summary.battery.quantity,
+        image: summary.battery.primary_image?.image_path,
+        // type: 'battery'
+      });
+    
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+    const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+    localStorage.setItem('cartCount', cartCount.toString());
+
+    window.dispatchEvent(new CustomEvent('cartUpdated', {
+      detail: { count: cartCount }
+    }));
+    navigate('/cart');
+    // toast.success('تمت إضافة المكونات إلى السلة بنجاح');
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen" dir="rtl">
@@ -270,6 +333,7 @@ function SolarSystemCalculator() {
 
               {/* عرض الملخص */}
               {summary && (
+                <>
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-lg shadow-md p-6 border border-gray-200 mt-6 space-y-2">
                   <h3 className="text-xl font-bold mb-4">ملخص الاختيارات</h3>
                   <p><strong>لوح شمسي:</strong> {summary.panel.name} x {summary.panelQuantity} = {summary.panelsCost.toLocaleString()} $</p>
@@ -287,7 +351,12 @@ function SolarSystemCalculator() {
                   <p><strong>وقت الشحن النظري لسلسلة واحدة:</strong> {summary.chargingTimePerString ? summary.chargingTimePerString.toFixed(2) + ' ساعة' : 'غير متوفر'}</p>
                   <p><strong>وقت الشحن الفعلي (+15%):</strong> {summary.chargingTimeAdjusted ? summary.chargingTimeAdjusted.toFixed(2) + ' ساعة' : 'غير متوفر'}</p>
                 </motion.div>
+                <button  onClick={handleAddToCart} className="w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-800 transition-colors">
+                اضافة الى السلة
+              </button>
+                </>
               )}
+             
             </motion.div>
           ) : (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="prose max-w-none space-y-4" dir="rtl">
