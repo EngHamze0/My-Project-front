@@ -5,7 +5,7 @@ import {
   RequireAuth,
   RequireAuthAdmin,
 } from "./components/RequireAuth/RequireAuth";
-
+import SolarSystemCalculator from "./pages/SolarSystemCalculator";
 function App() {
   return (
     <Router>
@@ -23,6 +23,7 @@ function App() {
           <Route path="cart" element={<pages.Cart />} />
           <Route path="services" element={<pages.ServicesPage />} />
           <Route path="services/:id" element={<pages.ServiceDetails />} />
+          <Route path="s" element={<SolarSystemCalculator />} />
 
 
 
