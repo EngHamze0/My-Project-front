@@ -136,7 +136,7 @@ const CouponDetails = () => {
   const formatDate = (dateString) => {
     if (!dateString) return 'غير محدد';
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat('ar-SA', {
+    return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
