@@ -1,7 +1,23 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handleContactClick = (e) => {
+    e.preventDefault();
+    // إذا كنا في الصفحة الرئيسية
+    if (window.location.pathname === '/') {
+      const contactSection = document.querySelector('#contact-section');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // إذا كنا في صفحة أخرى، انتقل إلى الصفحة الرئيسية مع تمرير إلى قسم التواصل
+      navigate('/', { state: { scrollToContact: true } });
+    }
+  };
+
   return (
     <div className="relative bg-gradient-to-r from-secondary-700 to-secondary-500 overflow-hidden">
       <div className="absolute inset-0">
@@ -42,12 +58,13 @@ const Hero = () => {
               >
                 تصفح منتجاتنا
               </Link>
-              <Link
-                to="/contact"
+              <a
+                href="#"
+                onClick={handleContactClick}
                 className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-md font-medium hover:bg-white/10 transition-colors duration-300"
               >
                 تواصل معنا
-              </Link>
+              </a>
             </motion.div>
           </div>
           <div className="w-full md:w-1/2">

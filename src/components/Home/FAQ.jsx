@@ -90,7 +90,7 @@ const FAQ = () => {
         >
           <p className="text-gray-600 mb-4">لم تجد إجابة لسؤالك؟</p>
           <a
-            href="/contact"
+           
             className="inline-block bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-md transition-colors duration-300"
           >
             تواصل معنا

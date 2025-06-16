@@ -63,6 +63,20 @@ const Navbar = () => {
     navigate('/');
   };
 
+  const handleContactClick = (e) => {
+    e.preventDefault();
+    // إذا كنا في الصفحة الرئيسية
+    if (window.location.pathname === '/') {
+      const contactSection = document.querySelector('#contact-section');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // إذا كنا في صفحة أخرى، انتقل إلى الصفحة الرئيسية مع تمرير إلى قسم التواصل
+      navigate('/', { state: { scrollToContact: true } });
+    }
+  };
+
   const navLinks = [
     { title: 'الرئيسية', path: '/' },
     { title: '', path: '' },
@@ -70,7 +84,7 @@ const Navbar = () => {
     { title: 'خدماتنا', path: '/services' },
     { title: 'حساب المنظومة', path: '/solar-system-calculator' },
     { title: 'من نحن', path: '/about' },
-    { title: 'تواصل معنا', path: '/contact' },
+    { title: 'تواصل معنا', path: '#', onClick: handleContactClick },
   ];
 
   return (
@@ -85,13 +99,26 @@ const Navbar = () => {
         {/* القائمة للشاشات الكبيرة */}
         <div className="hidden md:flex space-x-10 rtl:space-x-reverse">
           {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className="text-white hover:text-primary-400 transition-colors duration-300 px-2 py-2"
-            >
-              {link.title}
-            </Link>
+            link.title && (
+              link.onClick ? (
+                <a
+                  key={link.path}
+                  href={link.path}
+                  onClick={link.onClick}
+                  className="text-white hover:text-primary-400 transition-colors duration-300 px-2 py-2"
+                >
+                  {link.title}
+                </a>
+              ) : (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className="text-white hover:text-primary-400 transition-colors duration-300 px-2 py-2"
+                >
+                  {link.title}
+                </Link>
+              )
+            )
           ))}
         </div>
 
