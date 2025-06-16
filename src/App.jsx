@@ -6,12 +6,15 @@ import {
   RequireAuthAdmin,
 } from "./components/RequireAuth/RequireAuth";
 import SolarSystemCalculator from "./pages/SolarSystemCalculator";
+import { NotFound } from './pages';
+
 function App() {
   return (
     <Router>
       <Routes>
         {/* public  */}
-        
+        <Route path="*" element={<NotFound />} />
+
         <Route path="/" element={<components.Layout />}>
           <Route index element={<pages.Home />} />
 

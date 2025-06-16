@@ -46,3 +46,5 @@ export { default as UsersList } from './Dashboard/Users/UsersList';
 export { default as AddUser } from './Dashboard/Users/AddUser';
 export { default as EditUser } from './Dashboard/Users/EditUser';
 
+export { default as NotFound } from './NotFound';
+
