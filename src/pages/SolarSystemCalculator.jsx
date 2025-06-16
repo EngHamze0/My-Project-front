@@ -41,7 +41,7 @@ function SolarSystemCalculator() {
         let page = 1;
         let lastPage = 1;
         while (page <= lastPage) {
-          const res = await api.get(`products`);
+          const res = await api.get(`allproducts`);
           const respData = res.data;
           let list = [];
           if (Array.isArray(respData.data)) list = respData.data;
@@ -50,6 +50,7 @@ function SolarSystemCalculator() {
           if (respData.meta && respData.meta.last_page) lastPage = respData.meta.last_page;
           else break;
           page += 1;
+          console.log(list);
         }
         // تحويل القيم النصية إلى أرقام
         all.forEach(p => {
@@ -75,6 +76,10 @@ function SolarSystemCalculator() {
     };
     fetchAllProducts();
   }, []);
+
+  useEffect(() => {
+    console.log(summary);
+  }, [summary]);
 
   // تحديث القوائم عند تغيير المنتجات أو مدخلات القدرة أو اختيار الإنفيرتر
   useEffect(() => {
