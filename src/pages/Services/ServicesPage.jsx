@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 
 const ServicesPage = () => {
@@ -11,7 +11,8 @@ const ServicesPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-
+  const location = useLocation();
+  const nav = useNavigate()
   // جلب الخدمات
   useEffect(() => {
     const fetchServices = async () => {
@@ -77,6 +78,15 @@ const ServicesPage = () => {
       }
     }
   };
+
+  const handleNavigate = (service)=>{
+    console.log("Ser page" , location.state?.returnUrl)
+    if(location.state?.returnUrl){
+      nav(`/services/${service.id}`, { state: { returnUrl: '/checkout' } });
+    }else{
+      nav(`/services/${service.id}`);
+    }
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen py-12">
@@ -165,12 +175,13 @@ const ServicesPage = () => {
                     </div>
                   </div>
                   
-                  <Link 
-                    to={`/services/${service.id}`}
+                  <button 
+                    // to={`/services/${service.id}`}
+                    onClick={()=>handleNavigate(service)}
                     className="block w-full text-center px-4 py-2 bg-primary-500 text-white rounded-md hover:bg-primary-600 transition-colors"
                   >
                     عرض التفاصيل
-                  </Link>
+                  </button>
                 </div>
               </motion.div>
             ))}

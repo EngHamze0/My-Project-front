@@ -359,8 +359,7 @@ const Checkout = () => {
                   ) : 'إتمام الطلب'}
                 </button>
                 <button
-                  onClick={() => navigate('/services')}
-
+                  onClick={() => navigate('/services' ,  { state: { returnUrl: '/checkout' }})}
                   className="w-full py-3 bg-primary-600 text-white rounded-md hover:bg-primary-800 transition-colors mt-2 flex items-center justify-center"
                 >
                  عرض خدمات الشركة

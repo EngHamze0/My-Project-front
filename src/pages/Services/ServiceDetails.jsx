@@ -1,4 +1,4 @@
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import api from '../../services/api';
 import { useEffect, useState } from 'react';
@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 const ServiceDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -95,7 +96,11 @@ const ServiceDetails = () => {
       
       // الانتقال إلى صفحة الاشتراكات بعد ثانيتين
       setTimeout(() => {
-        navigate('/subscriptions');
+        if(location.state?.returnUrl){
+          navigate(location.state?.returnUrl)
+        }else{
+          navigate('/subscriptions');
+        }
       }, 2000);
       
     } catch (err) {
