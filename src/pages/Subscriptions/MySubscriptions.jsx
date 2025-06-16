@@ -19,7 +19,7 @@ const MySubscriptions = () => {
   const fetchSubscriptions = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/subscriptions');
+      const response = await api.get('/my-subscriptions');
       setSubscriptions(response.data.data);
       setError('');
     } catch (err) {
