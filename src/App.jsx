@@ -11,6 +11,7 @@ function App() {
     <Router>
       <Routes>
         {/* public  */}
+        
         <Route path="/" element={<components.Layout />}>
           <Route index element={<pages.Home />} />
 
@@ -23,7 +24,7 @@ function App() {
           <Route path="cart" element={<pages.Cart />} />
           <Route path="services" element={<pages.ServicesPage />} />
           <Route path="services/:id" element={<pages.ServiceDetails />} />
-          <Route path="s" element={<SolarSystemCalculator />} />
+          <Route path="solar-system-calculator" element={<SolarSystemCalculator />} />
 
 
 

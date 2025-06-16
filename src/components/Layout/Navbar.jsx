@@ -67,6 +67,7 @@ const Navbar = () => {
     { title: 'الرئيسية', path: '/' },
     { title: 'منتجاتنا', path: '/products' },
     { title: 'خدماتنا', path: '/services' },
+    { title: 'حساب المنظومة', path: '/solar-system-calculator' },
     { title: 'من نحن', path: '/about' },
     { title: 'تواصل معنا', path: '/contact' },
   ];
