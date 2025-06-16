@@ -30,7 +30,6 @@ const SideBar = () => {
       subItems: [
         { title: 'كل المنتجات', path: '/dashboard/products' },
         { title: 'إضافة منتج', path: '/dashboard/products/add' },
-        { title: 'الفئات', path: '/dashboard/products/categories' }
       ]
     },
     {
