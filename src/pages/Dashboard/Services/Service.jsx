@@ -80,13 +80,12 @@ const Service = () => {
   };
 
   // تنسيق السعر
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('ar-SA', {
+   const formatPrice = (price) => {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'SAR'
+      currency: 'USD'
     }).format(price);
   };
-
   // تنسيق التاريخ
   const formatDate = (dateString) => {
     const date = new Date(dateString);

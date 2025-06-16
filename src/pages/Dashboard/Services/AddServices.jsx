@@ -197,7 +197,7 @@ const AddServices = () => {
             {/* السعر */}
             <div>
               <label htmlFor="price" className="block text-gray-700 font-medium mb-2">
-                السعر (ريال) <span className="text-red-500">*</span>
+                السعر ($) <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"

@@ -100,11 +100,11 @@ const FeaturedProducts = () => {
                   <div className="flex items-center">
                     {product.oldPrice ? (
                       <div className="flex flex-col">
-                        <span className="text-lg font-bold text-primary-600">{product.price} ريال</span>
-                        <span className="text-sm text-gray-500 line-through">{product.oldPrice} ريال</span>
+                        <span className="text-lg font-bold text-primary-600">{product.price} $</span>
+                        <span className="text-sm text-gray-500 line-through">{product.oldPrice} $</span>
                       </div>
                     ) : (
-                      <span className="text-lg font-bold text-primary-600">{product.price} ريال</span>
+                      <span className="text-lg font-bold text-primary-600">{product.price} $</span>
                     )}
                   </div>
                   <Link

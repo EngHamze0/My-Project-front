@@ -49,9 +49,9 @@ const ServicesPage = () => {
 
   // تنسيق السعر
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('ar-SA', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'SAR'
+      currency: 'USD'
     }).format(price);
   };
 
