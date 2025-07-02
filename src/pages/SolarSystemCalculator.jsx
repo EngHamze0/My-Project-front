@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 // مكون حاسبة نظام الطاقة الشمسية مع اختيار المستخدم للمنتجات وحساب الكميات والتكلفة والتشغيل والشحن
@@ -220,14 +222,18 @@ function SolarSystemCalculator() {
     window.dispatchEvent(new CustomEvent('cartUpdated', {
       detail: { count: cartCount }
     }));
+    toast.success('تمت إضافة المكونات إلى السلة بنجاح!');
     navigate('/cart');
     // toast.success('تمت إضافة المكونات إلى السلة بنجاح');
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen" dir="rtl">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100" dir="rtl">
+        <svg className="animate-spin h-16 w-16 text-blue-600" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+        </svg>
       </div>
     );
   }
@@ -253,7 +259,10 @@ function SolarSystemCalculator() {
               {/* إدخال القدرة والنسخ الاحتياطي */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block mb-1">القدرة المطلوبة (واط)</label>
+                  <label className="block mb-1">
+                    القدرة المطلوبة (واط)
+                    <span className="ml-2 cursor-pointer" title="أدخل مجموع الأحمال الكهربائية المطلوبة">🛈</span>
+                  </label>
                   <input type="number" value={requiredPower} onChange={e=>{ setRequiredPower(e.target.value); setSelectedInverterId(''); setSelectedBatteryId(''); setSummary(null); }} className="w-full p-2 border rounded" placeholder="مثال: 1500" />
                 </div>
                 <div>
@@ -381,6 +390,7 @@ function SolarSystemCalculator() {
           )}
         </motion.div>
       </div>
+      <ToastContainer position="top-center" rtl autoClose={3000} />
     </div>
   );
 }
